@@ -1,4 +1,5 @@
 const express = require('express');
+const oracledb = require('oracledb');
 const app = express();
 const db = require('./persistence');
 const getItems = require('./routes/getItems');
@@ -14,12 +15,48 @@ app.post('/items', addItem);
 app.put('/items/:id', updateItem);
 app.delete('/items/:id', deleteItem);
 
-db.init().then(() => {
-    app.listen(3000, () => console.log('Listening on port 3000'));
-}).catch((err) => {
-    console.error(err);
-    process.exit(1);
-});
+console.log('get connection');
+
+oracledb.getConnection(
+    {
+        user: 'hans',
+        password: 'test',
+        connectString:
+            '(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = 172.17.0.1)(PORT = 1521))(CONNECT_DATA =(SERVER = DEDICATED)(SERVICE_NAME = XEPDB1)))',
+    },
+    function (err, connection) {
+        console.log('open connection');
+        if (err) {
+            console.error(err);
+            return;
+        }
+
+        app.listen(3000, () => console.log('Listening on port 3000'));
+
+        connection.execute(
+            'select id,name from hans.test',
+            [],
+            function (err, result) {
+                console.log('klaar met select');
+                if (err) {
+                    error = err;
+                    return;
+                }
+
+                id = result.rows[0][0];
+                name = result.rows[0][1];
+
+                error = null;
+                console.log('resultaat id=', id, 'name=', name);
+                connection.close(function (err) {
+                    if (err) {
+                        console.error(err);
+                    }
+                });
+            },
+        );
+    },
+);
 
 const gracefulShutdown = () => {
     db.teardown()

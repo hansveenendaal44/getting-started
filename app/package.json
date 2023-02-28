@@ -13,7 +13,8 @@
     "mysql2": "^2.3.3",
     "sqlite3": "^5.1.2",
     "uuid": "^9.0.0",
-    "wait-port": "^1.0.4"
+    "wait-port": "^1.0.4",
+    "oracledb": "^5.5"
   },
   "resolutions": {
     "ansi-regex": "5.0.1"
