@@ -16,10 +16,10 @@ const {
 let pool;
 
 async function init() {
-    const host = HOST_FILE ? fs.readFileSync(HOST_FILE) : HOST;
-    const user = USER_FILE ? fs.readFileSync(USER_FILE) : USER;
-    const password = PASSWORD_FILE ? fs.readFileSync(PASSWORD_FILE) : PASSWORD;
-    const database = DB_FILE ? fs.readFileSync(DB_FILE) : DB;
+    const host = 'localhost';
+    const user = 'root';
+    const password = 'Priapus89';
+    const database = 'hans';
 
     await waitPort({
         host,
@@ -36,7 +36,7 @@ async function init() {
         database,
         charset: 'utf8mb4',
     });
-
+console.log(pool);
     return new Promise((acc, rej) => {
         pool.query(
             'CREATE TABLE IF NOT EXISTS todo_items (id varchar(36), name varchar(255), completed boolean) DEFAULT CHARSET utf8mb4',
