@@ -1,7 +1,16 @@
 const waitPort = require('wait-port');
 const fs = require('fs');
 const mysql = require('mysql2');
+var http = require('http');
 
+var globals; 
+// test
+
+
+var data =fs.readFileSync("/home/hansveenendaal/Documents/nodejsglobals/globals.json");
+
+globals = JSON.parse(data);
+ 
 const {
     MYSQL_HOST: HOST,
     MYSQL_HOST_FILE: HOST_FILE,
@@ -16,10 +25,11 @@ const {
 let pool;
 
 async function init() {
-    const host = 'localhost';
-    const user = 'root';
-    const password = 'Priapus89';
-    const database = 'hans';
+
+    const host = globals.servername;
+    const user = globals.username;
+    const password = globals.password;
+    const database = globals.databasename;
 
     await waitPort({
         host,

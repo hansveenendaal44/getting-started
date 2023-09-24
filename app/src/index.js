@@ -1,5 +1,5 @@
 const express = require('express');
-//const oracledb = require('oracledb');
+
 const app = express();
 const db = require('./persistence');
 const getItems = require('./routes/getItems');
